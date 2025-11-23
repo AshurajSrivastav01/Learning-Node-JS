@@ -8,10 +8,10 @@ let server = http.createServer((req, res) => {
         case "/":
                 res.end("Namaste World!"); // Send the response fron the server            
             break;
-            case "/Categories":
+        case "/Categories":
                 res.end("Categories"); // Send the response fron the server            
-                break;
-            case "/Services":
+            break;
+        case "/Services":
                 res.end("Services"); // Send the response fron the server                            
             break;
         case "/About":
@@ -24,6 +24,6 @@ let server = http.createServer((req, res) => {
                 res.end("Namaste World!"); // Send the response fron the server
             break;
     }
-});
+}).listen("1469"); // http://localhost:1469
 
-server.listen("8000"); // http://localhost:8000
+// server.listen("8000"); // http://localhost:8000
