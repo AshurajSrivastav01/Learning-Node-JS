@@ -1,4 +1,7 @@
 const express = require("express");
+const { checkLoginToken } = require("./checkLoginTokenMiddleware");
+require("dotenv").config();
+
 let app = express();
 app.use(express.json());
 
@@ -21,4 +24,11 @@ app.post("/login", (req, res) => {
     });
 });
 
-app.listen("1201");
+// app.use(checkLoginToken); // App Level Middleware
+
+    app.get("/dashboard", checkLoginToken, (req, res) => {
+    res.send("Welcome to the Dashboard!");
+});
+
+// app.listen("1201");
+app.listen(process.env.PORT);
