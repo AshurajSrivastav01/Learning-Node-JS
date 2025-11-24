@@ -11,6 +11,9 @@ app.get("/", (req, res) => {
 
 // Login Post API
 app.post("/login", (req, res) => {
+    // console.log(req);
+    console.log(req.body.userName);
+    console.log(req.body.userPassword);
     res.send({
         status: true,
         data: req.body,
