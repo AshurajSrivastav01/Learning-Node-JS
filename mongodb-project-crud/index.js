@@ -5,8 +5,25 @@ let app = express();
 app.use(express.json()); // basically wea are going to use josn on over app.
 
 // 
-app.get("/student-read", (req, res) => {
-	res.send("Student View API");
+app.get("/student-read", async (req, res) => {
+	let db = await dbConnnection();
+	let studentCollection = db.collection('students');
+
+	let result = await studentCollection.find().toArray();
+
+	// Sending the response to the Cleint Server
+	if(result){
+		res.send({
+			status: true,
+			data: result,
+			message: "Fetched Student Successfully!"
+		});
+	}else{
+		res.send({
+			status: false,
+			message: "Faild to Fetch Student data!"
+		});
+	}
 });
 
 app.post("/student-insert", async (req, res) => {
@@ -19,6 +36,9 @@ app.post("/student-insert", async (req, res) => {
 		studentEmail: data.studentEmail, 
 		studentPassword: data.studentPassword		
 	}));
+
+	console.log(studentsData);
+	
 
 	// Insert the data and storing the result in the 'result' variable
 	let result = await studentCollection.insertMany(studentsData);
@@ -39,4 +59,3 @@ app.post("/student-insert", async (req, res) => {
 });
 
 app.listen("8000");
-
