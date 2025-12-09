@@ -1,5 +1,6 @@
 let express =  require("express");
 const { dbConnnection } = require("./dbConnection");
+const { ObjectId } = require("mongodb");
 let app = express();
 
 app.use(express.json()); // basically wea are going to use josn on over app.
@@ -38,7 +39,6 @@ app.post("/student-insert", async (req, res) => {
 	}));
 
 	console.log(studentsData);
-	
 
 	// Insert the data and storing the result in the 'result' variable
 	let result = await studentCollection.insertMany(studentsData);
@@ -54,6 +54,27 @@ app.post("/student-insert", async (req, res) => {
 		res.send({
 			status: false,
 			message: "Faild to add Student!"
+		});
+	}
+});
+
+app.delete("/student-delete/:id",async (req, res)=>{
+	let db = await dbConnnection();
+	let studentCollection = db.collection("students");
+	
+	let id = req.params.id;
+
+	let result = await studentCollection.deleteOne({_id:new ObjectId(id)});
+	if(result.deletedCount > 0){
+		return res.send({
+			status: true,
+			data: result,
+			message: "Student record has been delete Successfully!"
+		});
+	}else{
+		return res.send({
+			status: false,
+			message: "Student is not present in your db!"
 		});
 	}
 });
