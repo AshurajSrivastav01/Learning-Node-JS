@@ -79,4 +79,32 @@ app.delete("/student-delete/:id",async (req, res)=>{
 	}
 });
 
+app.put("/student-update/:id",async (req, res)=>{
+	try {
+		let db = await dbConnnection();
+		let studentCollection = db.collection("students");
+		
+		let id = req.params.id;
+
+		let studentData = {
+			studentName: req.body.studentName,
+			studentEmail: req.body.studentEmail
+		};
+
+		let updateResponse = await studentCollection.updateOne({_id:new ObjectId(id)}, {$set: {
+			studentName : studentData.studentName,
+			studentEmail: studentData.studentEmail
+		}});
+
+		res.status(200).send({
+			data: studentData,
+			response: updateResponse,
+			message: "Hey here is your search result!"
+		});
+	} catch (error) {
+		console.error(err);
+        res.status(500).send({ message: "Something went wrong!" });
+	}
+});
+
 app.listen("8000");
